@@ -1,9 +1,9 @@
 A simple Renderer for Slim4 framework for JSON error Message. Usage is very simple, just add in your container settings this array:
 ```
 'settings_error' => [
-		'reporting' => ['E_ALL', '~E_NOTICE'],
+	'reporting' => ['E_ALL', '~E_NOTICE'],
         'display_error_details' => true,
-		'log_errors' => true,
+	'log_errors' => true,
         'log_error_details' => true
 ]
 ```
@@ -18,10 +18,12 @@ use PerSeo\ErrorRenderer\JsonError;
 
 ErrorMiddleware::class => function (ContainerInterface $container) {
         $app = $container->get(App::class);
-        $settings = ($container->has('settings_error') ? $container->get('settings_error') : ['reporting' => ['E_ALL','~E_NOTICE'],
-        'display_error_details' => true,
+        $settings = ($container->has('settings_error') ? $container->get('settings_error') : [
+		'reporting' => ['E_ALL','~E_NOTICE'],
+        	'display_error_details' => true,
 		'log_errors' => true,
-        'log_error_details' => true]);
+        	'log_error_details' => true
+	);
         $errorMiddleware = new ErrorMiddleware(
             $app->getCallableResolver(),
             $app->getResponseFactory(),
