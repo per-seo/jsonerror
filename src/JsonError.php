@@ -29,39 +29,15 @@ class JsonError extends AbstractErrorRenderer
     public function __invoke(Throwable $exception, bool $displayErrorDetails): string
     {
         $this->logger->error($exception);
-        
         $data = [
             'debug' => $displayErrorDetails,
             'code' => $exception->getCode(),
             'message' => $exception->getMessage(),
-            'basepath' => $this->app->getBasePath() ?? ''
+            'file' => $exception->getFile(),
+            'line' => $exception->getLine(),
+            'trace' => $exception->getTraceAsString(),
+            'basepath' => (string) $this->app->getBasePath()
         ];
-
-        if ($displayErrorDetails) {
-            $data['file'] = $exception->getFile();
-            $data['line'] = $exception->getLine();
-            $data['trace'] = $exception->getTraceAsString();
-        }
-        
-        try {
-            return (string) json_encode($data, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
-        } catch (\JsonException $e) {
-            $this->logger->error('Error rendering exception: ' . $e->getMessage());
-            
-            // Return a minimal error response
-            $errorData = [
-                'message' => 'Error rendering error: ' . $e->getMessage(),
-                'code' => 500,
-                'basepath' => $this->app->getBasePath() ?? ''
-            ];
-            
-            try {
-                return (string) json_encode($errorData, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
-            } catch (\JsonException $e) {
-                // If even the error response can't be encoded, return a hardcoded JSON string
-                return '{"message":"Error rendering error","code":500,"basepath":"' . 
-                       addslashes($this->app->getBasePath() ?? '') . '"}';
-            }
-        }
+        return (string) json_encode($data, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
     }
 }
