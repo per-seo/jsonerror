@@ -33,6 +33,7 @@ ErrorMiddleware::class => function (ContainerInterface $container) {
         );
         $errorHandler = $errorMiddleware->getDefaultErrorHandler();
         $errorHandler->registerErrorRenderer('application/json', JsonError::class);
+	$errorHandler->forceContentType('application/json');
         return $errorMiddleware;
     }
 ```
