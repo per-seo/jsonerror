@@ -3,7 +3,8 @@
     "type": "library",
     "description": "JSON Error for Slim 4. This Renderer print a JSON when a 500 error occours",
     "keywords": [
-        "locale",
+        "json",
+	"error",
         "slim",
         "slim4"
     ],
