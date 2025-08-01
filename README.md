@@ -23,7 +23,7 @@ ErrorMiddleware::class => function (ContainerInterface $container) {
         	'display_error_details' => true,
 		'log_errors' => true,
         	'log_error_details' => true
-	);
+	]);
         $errorMiddleware = new ErrorMiddleware(
             $app->getCallableResolver(),
             $app->getResponseFactory(),
